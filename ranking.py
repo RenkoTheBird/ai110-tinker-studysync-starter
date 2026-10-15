@@ -45,7 +45,49 @@ def score_study_spot(profile: dict, spot: dict) -> tuple:
     # (compare using NOISE_ORDER), distance_miles vs max_distance, and
     # seats_available vs min_seats. Append a short string to `reasons` for
     # each factor that contributed, whether it helped or hurt the score.
-    raise NotImplementedError
+    score = 0
+    reasons = []
+
+    # Noise
+    if profile["max_noise"] == 'quiet':
+        if spot["noise_level"] == 'quiet':
+            score += 1
+            reasons.append("quiet enough")
+        else:
+            score -= 1
+            reasons.append("too noisy")
+    elif profile["max_noise"] == 'moderate':
+        if spot["noise_level"] == 'moderate':
+            score += 1
+            reasons.append("moderate noise level")
+        else:
+            score -= 1
+            reasons.append("noise level not moderate")
+    elif profile["max_noise"] == 'loud':
+        if spot["noise_level"] == 'loud':
+            score += 1
+            reasons.append("loud enough")
+        else:
+            score -= 1
+            reasons.append("not loud enough")
+
+    # Distance
+    if spot["distance_miles"] <= profile["max_distance"]:
+        score += 1
+        reasons.append("close enough")
+    else:
+        score -= 1
+        reasons.append("too far")
+
+    # Seats
+    if spot["seats_available"] >= profile["min_seats"]:
+        score += 1
+        reasons.append("enough seats")
+    else:
+        score -= 1
+        reasons.append("not enough seats")
+
+    return (score, reasons)
 
 
 def rank_study_spots(profile: dict, spots: list, k: int = 3) -> list:
