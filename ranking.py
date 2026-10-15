@@ -109,7 +109,8 @@ def format_results(ranked: list) -> None:
     """Print each ranked study spot with its score and reasons, one line each."""
     # TODO: for each (spot, score, reasons) tuple, print a readable line, e.g.:
     # "1. Innovation Commons -- Score: 5.0 -- Because: quiet enough, close enough"
-    raise NotImplementedError
+    for i, (spot, score, reasons) in enumerate(ranked):
+        st.write(f"{i+1}. {spot['name']} -- Score: {score} -- Because: {', '.join(reasons)}")
 
 
 def render_study_spot_tab():
