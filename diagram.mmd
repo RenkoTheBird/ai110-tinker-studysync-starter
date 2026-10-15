@@ -1,2 +1,21 @@
-<!-- Save your AI-generated Mermaid flowchart source here (Tinker 3B, Part 4). -->
-<!-- Replace this comment with a fenced ```mermaid``` code block: input -> process/score -> output. -->
+flowchart TD
+    A["data/study_spots.csv<br/>(CSV input)"] --> B["load_study_spots()<br/>csv.DictReader → list of dicts<br/>distance_miles → float, seats_available → int"]
+    P["Student profile<br/>max_noise, max_distance, min_seats"]
+    B --> C["score_study_spot(profile, spot)<br/>for each spot"]
+    P --> C
+    C --> D{"Noise check<br/>noise_level vs max_noise"}
+    D --> E{"Distance check<br/>distance_miles ≤ max_distance?"}
+    E --> F{"Seats check<br/>seats_available ≥ min_seats?"}
+    F --> G["(score, reasons)<br/>+1/−1 per factor"]
+    G --> H["rank_study_spots(profile, spots, k)<br/>sort by score desc, take top k"]
+    H --> I["format_results(ranked)<br/>print name, score, reasons<br/>per line"]
+    I --> J["Formatted output"]
+
+    subgraph Streamlit UI
+        S["render_study_spot_tab()<br/>selectbox / slider / number_input<br/>→ 'Find spots' button"] --> P
+        S -->|writes results| J
+    end
+
+    subgraph CLI entry
+        M["__main__<br/>profile = moderate, 1.0 mi, 4 seats"] --> B
+    end

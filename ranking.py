@@ -47,6 +47,8 @@ def score_study_spot(profile: dict, spot: dict) -> tuple:
     # each factor that contributed, whether it helped or hurt the score.
     score = 0
     reasons = []
+        
+    # Weights can bury quietness levels if quietness <= desired quietness
 
     # Noise
     if profile["max_noise"] == 'quiet':
