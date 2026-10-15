@@ -97,7 +97,12 @@ def rank_study_spots(profile: dict, spots: list, k: int = 3) -> list:
     """
     # TODO: score every spot with score_study_spot(), then use
     # sorted(..., key=..., reverse=True)[:k] to keep only the top k.
-    raise NotImplementedError
+    ranked = []
+    for spot in spots:
+        score, reasons = score_study_spot(profile, spot)
+        ranked.append((spot, score, reasons))
+    
+    return sorted(ranked, key=lambda x: x[1], reverse=True)[:k]
 
 
 def format_results(ranked: list) -> None:
